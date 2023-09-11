@@ -1,3 +1,22 @@
-<div>
-    <app-form-login></app-form-login>
-</div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jomhuria&family=Noto+Sans&family=Ysabeau:wght@300&display=swap" rel="stylesheet">
+
+<img src="assets/bq.png" class="mx-auto d-block logo" alt="burgerQueen">
+
+<form class="form" (ngSubmit)="onSubmit(InputEmail1.value, InputPassword.value)">
+    <div class="mb-3">
+      <label for="InputEmail1" class="form-label">Email</label>
+      <input type="email" class="form-control" id="InputEmail1" #InputEmail1 aria-describedby="emailHelp" required>
+    </div>
+    <div class="mb-3">
+      <label for="InputPassword" class="form-label">Senha</label>
+      <input type="password" class="form-control" id="InputPassword" #InputPassword required>
+    </div>
+
+    <div *ngIf="loginError" class="error-message">Erro de login. Verifique suas credenciais e tente novamente.</div>
+
+    <button type="submit" class="btn btn-secundary entrar">Entrar</button>
+</form>
+
+<h5 class="fast-food">Um fast food 24H</h5>
