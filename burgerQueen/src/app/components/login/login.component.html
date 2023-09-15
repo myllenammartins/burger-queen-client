@@ -4,19 +4,21 @@
 
 <img src="assets/bq.png" class="mx-auto d-block logo" alt="burgerQueen">
 
-<form class="form" (ngSubmit)="onSubmit(InputEmail1.value, InputPassword.value)">
-    <div class="mb-3">
-      <label for="InputEmail1" class="form-label">Email</label>
-      <input type="email" class="form-control" id="InputEmail1" #InputEmail1 aria-describedby="emailHelp" required>
-    </div>
-    <div class="mb-3">
-      <label for="InputPassword" class="form-label">Senha</label>
-      <input type="password" class="form-control" id="InputPassword" #InputPassword required>
-    </div>
+<section>
+  <form class="form" (ngSubmit)="onSubmit(InputEmail1.value, InputPassword.value)">
+      <div class="mb-3">
+        <label for="InputEmail1" class="form-label">Email</label>
+        <input type="email" class="form-control" id="InputEmail1" #InputEmail1 aria-describedby="emailHelp" required>
+      </div>
+      <div class="mb-3">
+        <label for="InputPassword" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="InputPassword" #InputPassword required>
+      </div>
 
-    <div *ngIf="loginError" class="error-message">Erro de login. Verifique suas credenciais e tente novamente.</div>
+      <button type="submit" class="btn btn-secundary entrar">Entrar</button>
 
-    <button type="submit" class="btn btn-secundary entrar">Entrar</button>
-</form>
+      <div *ngIf="loginError" class="error-message">Erro de login. Verifique suas credenciais e tente novamente.</div>
+  </form>
+</section>
 
 <h5 class="fast-food">Um fast food 24H</h5>
