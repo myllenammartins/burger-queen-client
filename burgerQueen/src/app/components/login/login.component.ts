@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -7,18 +8,38 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  loginError = false;
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) { }
 
-  onSubmit(email: string, password: string) {
-    // Simule a autenticação (substitua com sua lógica real)
-    if (email === 'seu_email_correto' && password === 'sua_senha_correta') {
-      // Credenciais corretas, redirecione para a rota de pedidos
-      this.router.navigate(['/pedidos']);
-    } else {
-      // Credenciais incorretas, mostre o erro
-      this.loginError = true;
-    }
+  Login() {
+    const credentials = {
+      email: this.email,
+      password: this.password
+    };
+
+    // Faça uma chamada à API para autenticar o usuário
+    this.http.post<any>('', credentials).subscribe(
+      response => {
+        // Se as credenciais forem válidas, a API deve retornar um token de autenticação
+        const token = response.token;
+
+        if (token) {
+          // Armazene o token no localStorage ou em um serviço de autenticação
+          localStorage.setItem('token', token);
+
+          // Redirecione para a página principal do sistema de pedidos
+          this.router.navigate(['']);
+        } else {
+          this.errorMessage = 'Credenciais inválidas. Por favor, verifique seu email e senha.';
+        }
+      },
+      error => {
+        console.error('Erro na autenticação:', error);
+        this.errorMessage = 'Ocorreu um erro durante a autenticação. Tente novamente mais tarde.';
+      }
+    );
   }
 }
