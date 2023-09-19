@@ -4,8 +4,8 @@
 
 <img src="assets/bq.png" class="mx-auto d-block logo" alt="burgerQueen">
 
-<section>
-  <form class="form" (ngSubmit)="onSubmit(InputEmail1.value, InputPassword.value)">
+<section class="login-container">
+  <form class="form" (ngSubmit)="Login()">
       <div class="mb-3">
         <label for="InputEmail1" class="form-label">Email</label>
         <input type="email" class="form-control" id="InputEmail1" #InputEmail1 aria-describedby="emailHelp" required>
