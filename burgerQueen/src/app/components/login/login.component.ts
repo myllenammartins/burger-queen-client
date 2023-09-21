@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/service/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,36 +11,39 @@ import { HttpClient } from '@angular/common/http';
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  errorMessage: string = '';
+  errorLogin: boolean = false;
+  errorLoginMessage: string = ''; // Correção aqui
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(private router: Router, private authService: AuthService) {}
 
-  Login() {
-    const credentials = {
-      email: this.email,
-      password: this.password
-    };
+  async Login() {
+    try {
+      this.errorLogin = false;
+      const isUserLoggedIn = await this.authService.login(this.email, this.password);
 
-    // Faça uma chamada à API para autenticar o usuário
-    this.http.post<any>('', credentials).subscribe(
-      response => {
-        // Se as credenciais forem válidas, a API deve retornar um token de autenticação
-        const token = response.token;
-
-        if (token) {
-          // Armazene o token no localStorage ou em um serviço de autenticação
-          localStorage.setItem('token', token);
-
-          // Redirecione para a página principal do sistema de pedidos
-          this.router.navigate(['']);
-        } else {
-          this.errorMessage = 'Credenciais inválidas. Por favor, verifique seu email e senha.';
-        }
-      },
-      error => {
-        console.error('Erro na autenticação:', error);
-        this.errorMessage = 'Ocorreu um erro durante a autenticação. Tente novamente mais tarde.';
+      if (isUserLoggedIn) {
+        const userRole = localStorage.getItem('userRole');
+        switch(userRole){
+          case 'waiter':
+            this.router.navigate(['/menu']);
+            break;
+          case 'chef':
+            this.router.navigate(['/kitchen']);
+            break;
+          case 'admin':
+            this.router.navigate(['/admin']);
+            break;
+          default:
+            throw new Error('Role inválida');
+        }     
+      } else {
+        this.errorLogin = true;
+        throw new Error('Erro de login. Verifique suas credenciais e tente novamente.');
       }
-    );
+    } catch (error) {
+      console.error('Erro na autenticação:', error);
+      this.errorLogin = true;
+      this.errorLoginMessage = 'Erro de login. Verifique suas credenciais e tente novamente.';
+    }
   }
 }
